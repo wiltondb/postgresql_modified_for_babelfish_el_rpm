@@ -138,7 +138,7 @@ Patch100: babelfishpg-pr35-encode-c.patch
 
 BuildRequires: make
 BuildRequires: lz4-devel
-BuildRequires: gcc
+BuildRequires: devtoolset-9-gcc
 BuildRequires: perl(ExtUtils::MakeMaker) glibc-devel bison flex gawk
 BuildRequires: perl(ExtUtils::Embed), perl-devel
 BuildRequires: perl(Opcode)
@@ -510,6 +510,9 @@ find . -type f -name .gitignore | xargs rm
 
 
 %build
+
+. /opt/rh/devtoolset-9/enable
+
 # Avoid LTO on armv7hl as it runs out of memory
 %ifarch armv7hl s390x
 %define _lto_cflags %{nil}
