@@ -146,6 +146,7 @@ BuildRequires: perl(FindBin)
 %if 0%{?fedora} || 0%{?rhel} > 7
 BuildRequires: perl-generators
 %endif
+BuildRequires: perl-libs-postgresql-symlink
 BuildRequires: readline-devel zlib-devel
 BuildRequires: systemd systemd-devel util-linux
 BuildRequires: multilib-rpm-config
