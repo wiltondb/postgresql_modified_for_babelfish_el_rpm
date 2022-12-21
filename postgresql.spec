@@ -71,7 +71,7 @@ Epoch: 2
 %global version_babelfish BABEL_2_2_0
 %global version_babelfish_suffix __PG_%{majorversion}_%{minorversion}
 Version: %{version_postgres}.%{version_babelfish}
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 # The PostgreSQL license is very similar to other MIT licenses, but the OSI
 # recognizes it as an independent license, so we do as well.
@@ -138,7 +138,7 @@ Patch100: babelfishpg-pr35-encode-c.patch
 
 BuildRequires: make
 BuildRequires: lz4-devel
-BuildRequires: devtoolset-9-gcc
+BuildRequires: devtoolset-8-gcc
 BuildRequires: perl(ExtUtils::MakeMaker) glibc-devel bison flex gawk
 BuildRequires: perl(ExtUtils::Embed), perl-devel
 BuildRequires: perl(Opcode)
@@ -512,7 +512,7 @@ find . -type f -name .gitignore | xargs rm
 
 %build
 
-. /opt/rh/devtoolset-9/enable
+. /opt/rh/devtoolset-8/enable
 
 # Avoid LTO on armv7hl as it runs out of memory
 %ifarch armv7hl s390x
@@ -1308,6 +1308,9 @@ make -C postgresql-setup-%{setup_version} check
 
 
 %changelog
+* Wed Dec 21 2022 Alex Kasko <alex@staticlibs.net> - 14.5.BABEL_2_2_0-4
+- use devtoolset-8 instead of 9
+
 * Sun Dec 18 2022 Alex Kasko <alex@staticlibs.net> - 14.5.BABEL_2_2_0-3
 - copr rebuild with updated version
 
