@@ -135,7 +135,7 @@ Patch17: postgresql-llvm-15-compat.patch
 # Fix incorrect argument passing in encode.c
 # https://github.com/babelfish-for-postgresql/postgresql_modified_for_babelfish/pull/35
 Patch100: babelfishpg-pr35-encode-c.patch
-Patch101: babelfishpg-initdb-md5-auth.patch
+Patch101: babelfishpg-initdb.patch
 
 BuildRequires: make
 BuildRequires: lz4-devel
@@ -487,7 +487,7 @@ popd
 #%patch16 -p1
 %patch17 -p1
 %patch100 -p1
-#%patch101 -p1
+%patch101 -p1
 # We used to run autoconf here, but there's no longer any real need to,
 # since Postgres ships with a reasonably modern configure script.
 
