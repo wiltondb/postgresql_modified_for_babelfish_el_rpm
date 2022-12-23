@@ -71,7 +71,7 @@ Epoch: 2
 %global version_babelfish BABEL_2_2_0
 %global version_babelfish_suffix __PG_%{majorversion}_%{minorversion}
 Version: %{version_postgres}.%{version_babelfish}
-Release: 7%{?dist}
+Release: 8%{?dist}
 
 # The PostgreSQL license is very similar to other MIT licenses, but the OSI
 # recognizes it as an independent license, so we do as well.
@@ -931,7 +931,7 @@ find_lang_bins pltcl.lst pltcl
 
 %post server
 %systemd_post %service_name
-semanage port -a -t postgresql_port_t -p tcp 1433
+semanage port -a -t postgresql_port_t -p tcp 1433 >/dev/null 2>&1 || true 
 
 
 %preun server
@@ -1309,6 +1309,9 @@ make -C postgresql-setup-%{setup_version} check
 
 
 %changelog
+* Fri Dec 23 2022 Alex Kasko <alex@staticlibs.net - 14.5.BABEL_2_2_0-8
+- Make selinux 1433 port open as best effort
+
 * Fri Dec 23 2022 Alex Kasko <alex@staticlibs.net - 14.5.BABEL_2_2_0-7
 - SELinux semanage dependency fix for el 8 and 9
 
@@ -1316,19 +1319,19 @@ make -C postgresql-setup-%{setup_version} check
 - Use macros to have the same spec for el 7, 8 and 9
 
 * Thu Dec 22 2022 Alex Kasko <alex@staticlibs.net> - 14.5.BABEL_2_2_0-5
-- preload TDS library in default postgresql.conf
-- use md5 auth by default
-- register port 1433 with selinux
+- Preload TDS library in default postgresql.conf
+- Use md5 auth by default
+- Register port 1433 with selinux
 
 * Wed Dec 21 2022 Alex Kasko <alex@staticlibs.net> - 14.5.BABEL_2_2_0-4
-- use devtoolset-8 instead of 9
+- Use devtoolset-8 instead of 9
 
 * Sun Dec 18 2022 Alex Kasko <alex@staticlibs.net> - 14.5.BABEL_2_2_0-3
-- copr rebuild with updated version
+- Copr rebuild with updated version
 
 * Sun Dec 18 2022 Alex Kasko <alex@staticlibs.net> - 14.5.BABEL_2_2_0-2
-- make sources download less verbose
-- disable llvmjit
+- Make sources download less verbose
+- Disable llvmjit
 
 * Sat Dec 17 2022 Alex Kasko <alex@staticlibs.net> - 14.5.BABEL_2_2_0-1
 - Initial build of BABEL_2_2_0__PG_14_5
