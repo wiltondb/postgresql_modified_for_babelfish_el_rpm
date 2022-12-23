@@ -509,7 +509,7 @@ find . -type f -name .gitignore | xargs rm
 
 
 %build
-%{?el7:. /opt/rh/devtoolset-8/enable
+%{?el7:. /opt/rh/devtoolset-8/enable }
 # Avoid LTO on armv7hl as it runs out of memory
 %ifarch armv7hl s390x
 %define _lto_cflags %{nil}
