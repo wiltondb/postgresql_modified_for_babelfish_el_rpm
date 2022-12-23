@@ -71,7 +71,7 @@ Epoch: 2
 %global version_babelfish BABEL_2_2_0
 %global version_babelfish_suffix __PG_%{majorversion}_%{minorversion}
 Version: %{version_postgres}.%{version_babelfish}
-Release: 5%{?dist}
+Release: 6%{?dist}
 
 # The PostgreSQL license is very similar to other MIT licenses, but the OSI
 # recognizes it as an independent license, so we do as well.
@@ -126,20 +126,15 @@ Patch10: postgresql-datalayout-mismatch-on-s390.patch
 Patch12: postgresql-no-libecpg.patch
 # This patch disables deprecated ciphers in the test suite
 Patch14: postgresql-pgcrypto-openssl3-tests.patch
-# Fix compatibility with Python 3.11
-Patch15: postgresql-SPI-s-handling-of-errors-during-transaction-comm.patch
-# Fix compatibility with Perl 5.36
-Patch16: postgresql-pl-perl-test-case.patch
-# Fix compatibility with LLVM 15
-Patch17: postgresql-llvm-15-compat.patch 
 # Fix incorrect argument passing in encode.c
 # https://github.com/babelfish-for-postgresql/postgresql_modified_for_babelfish/pull/35
 Patch100: babelfishpg-pr35-encode-c.patch
+# Preload TDS lib and use md5 in setup script
 Patch101: babelfishpg-initdb.patch
 
 BuildRequires: make
 BuildRequires: lz4-devel
-BuildRequires: devtoolset-8-gcc
+BuildRequires: %{?el7:devtoolset-8-}gcc
 BuildRequires: perl(ExtUtils::MakeMaker) glibc-devel bison flex gawk
 BuildRequires: perl(ExtUtils::Embed), perl-devel
 BuildRequires: perl(Opcode)
@@ -147,7 +142,9 @@ BuildRequires: perl(FindBin)
 %if 0%{?fedora} || 0%{?rhel} > 7
 BuildRequires: perl-generators
 %endif
+%if 0%{?el7}
 BuildRequires: perl-libs-postgresql-symlink
+%endif
 BuildRequires: readline-devel zlib-devel
 BuildRequires: systemd systemd-devel util-linux
 BuildRequires: multilib-rpm-config
@@ -483,9 +480,6 @@ popd
 %patch9 -p1
 %patch10 -p1
 %patch14 -p1
-#%patch15 -p1
-#%patch16 -p1
-%patch17 -p1
 %patch100 -p1
 %patch101 -p1
 # We used to run autoconf here, but there's no longer any real need to,
@@ -515,9 +509,7 @@ find . -type f -name .gitignore | xargs rm
 
 
 %build
-
-. /opt/rh/devtoolset-8/enable
-
+%{?el7:. /opt/rh/devtoolset-8/enable
 # Avoid LTO on armv7hl as it runs out of memory
 %ifarch armv7hl s390x
 %define _lto_cflags %{nil}
@@ -1313,6 +1305,9 @@ make -C postgresql-setup-%{setup_version} check
 
 
 %changelog
+* Fri Dec 23 2022 Alex Kasko <alex@staticlibs.net - 14.5.BABEL_2_2_0-6
+- Use macros to have the same spec for el 7, 8 and 9
+
 * Thu Dec 22 2022 Alex Kasko <alex@staticlibs.net> - 14.5.BABEL_2_2_0-5
 - preload TDS library in default postgresql.conf
 - use md5 auth by default
