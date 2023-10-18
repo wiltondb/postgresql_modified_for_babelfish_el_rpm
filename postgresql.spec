@@ -50,7 +50,7 @@ Epoch: 1
 %global version_wiltondb_pg_release 2
 %global version_orig_tarball_package 1
 Version: %{version_postgres}.%{version_wiltondb}_%{version_wiltondb_pg_release}
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # The PostgreSQL license is very similar to other MIT licenses, but the OSI
 # recognizes it as an independent license, so we do as well.
@@ -556,7 +556,7 @@ export PYTHON=/usr/bin/python3
 
 # These configure options must match main build
 %configure $common_configure_options \
-  --with-extra-version=' (Fedora %{epoch}:%{version}-%{release})'
+  --with-extra-version=' (EL %{epoch}:%{version}-%{release})'
 
 %make_build world
 
@@ -1260,9 +1260,13 @@ make -C postgresql-setup-%{setup_version} check
 
 
 %changelog
+* Wed Oct 18 2023 WiltonDB Software <info@wiltondb.com> - 15.4.wiltondb3.3_2-2
+- Extra version label fix
+
 * Mon Oct 16 2023 WiltonDB Software <info@wiltondb.com - 15.4.wiltondb3.3_2-1
 - Update to wiltondb3.3-2
 - Update extra version label
+
 * Wed Oct 11 2023 WiltonDB Software <info@wiltondb.com - 15.4.wiltondb3.3_1-1
 - WiltonDB 3.3 initial build
 
